@@ -1,0 +1,35 @@
+CREATE TABLE "jobs" (
+	"job_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"hint"	TEXT NOT NULL UNIQUE,
+	"code"	TEXT NOT NULL,
+	"testbench_id"	INTEGER NOT NULL,
+	"status"	INTEGER NOT NULL,
+	"ip"	TEXT NOT NULL
+);
+
+CREATE TABLE "reports" (
+	"report_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"meta"	TEXT NOT NULL,
+	"analysis"	TEXT NOT NULL,
+	"compilation"	TEXT NOT NULL,
+	"execution"	TEXT NOT NULL,
+	"time"	TEXT NOT NULL,
+	"code"	INTEGER
+);
+
+CREATE TABLE "testbenches" (
+	"testbench_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"name"	TEXT NOT NULL UNIQUE,
+	"description"	TEXT NOT NULL,
+	"contents"	TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE "admins" (
+	"admin_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"name"	TEXT NOT NULL UNIQUE,
+	"salt"	TEXT NOT NULL,
+	"opaque"	TEXT NOT NULL
+);
+
+INSERT INTO admins (name, salt, opaque)
+	VALUES ("borges", "LE_SALT", "979108b9e9a79c7c2fe2588ce4ce7886b2e463f9ac93e15d959a42d3eb25f645bf4af0d174450cc91fd63684d976de3533ae26a1a02e9bc93e208b1d03d7e960");

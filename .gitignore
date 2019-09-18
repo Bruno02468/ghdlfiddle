@@ -1,0 +1,6 @@
+# ignore all files that may be in sandbox at a point in time...
+server/sandbox/*
+# except for the gitkeep
+!server/sandbox/.gitkeep
+# also ignore the database
+server/database.db

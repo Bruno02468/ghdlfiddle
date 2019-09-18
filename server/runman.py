@@ -13,16 +13,19 @@
 # WARNING 2: safety and sandboxing are firejail's job, not mine.
 
 # them constants...
-DATABASE_FILE = "../database.db"
-JOB_STATUS_QUEUED = 0
-JOB_STATUS_RUNNING = 1
-JOB_STATUS_DONE = 2
+DATABASE_FILE = "database.db"
+STATUS_QUEUED = 0
+STATUS_RUNNING = 1
+STATUS_DONE = 2
 ANALYSE = "ghdl -a target.vhd > a.log 2>&1"
 ELABORATE = "ghdl -e tb > e.log 2>&1"
 RUN = "ghdl -r tb --vcd=out.vcd > r.log 2>&1"
 TOTAL_COMMAND = "%s && %s && %s" % (ANALYSE, ELABORATE, RUN)
 SANDBOX="sandbox"
 ZIPFILE = SANDBOX + "/tb.zip"
+FINALCODE_GOOD = 1
+FINALCODE_BAD = -1
+FINALCODE_UNSURE = 0
 
 import sqlite3
 import sys
@@ -42,22 +45,23 @@ cxn = sqlite3.connect(DATABASE_FILE)
 # fetch the top job which is queued
 c = cxn.cursor()
 c.execute("SELECT job_id, hint, code, testbench_id FROM jobs WHERE status=?;"
-          (JOB_STATUS_QUEUED,))
+          (STATUS_QUEUED,))
 job_id, hint, job_code, tb_id = c.fetchone()
 c.close()
 
 # set it as RUNNING
 c = cxn.cursor()
 c.execute("UPDATE jobs SET status=? WHERE job_id=?;",
-          (JOB_STATUS_RUNNING, job_id))
+          (STATUS_RUNNING, job_id))
 cxn.commit()
 c.close()
 
-# prepare the report
+# prepare the report -- from this point on, we can call finish()
 meta = "No system report at this time."
 analysis = "Your code could not ne analysed."
 compilation = "Your code could not be compiled."
 execution = "Your code could not be executed."
+finalcode = 0
 
 # get the relevant testbench
 c = cxn.cursor()
@@ -71,6 +75,7 @@ if not tb_row:
   finish()
 
 # okay, fetch the testbench zipfile, and unpack it
+folder_cleanup()
 b64_zipped_tb = tb_row[0]
 zipfile = open(ZIPFILE, "wb")
 zipfile.write(base64.b64decode(b64_zipped_tb))
@@ -83,6 +88,7 @@ userfile.write(job_code)
 userfile.close()
 
 # now, we analyse, elaborate, and run the simulation
+# yes I know it's lazy and dirty and whatever, sorry not sorry
 runsafe(TOTAL_COMMAND, 5)
 analysis = runsafe("cat a.log")
 compilation = runsafe("cat e.log")
@@ -96,13 +102,26 @@ if compilation == "":
   metas.append("Compilation output empty; probably successful.")
 meta = "\n".join(metas)
 
+if "ghdlfiddle:GOOD" in execution:
+  finalcode = 1
+if "ghdlfiddle:BAD" in execution:
+  finalcode = -1
+
+finish()
+
 def finish():
   # put these into a report
   c = cxn.cursor()
-  c.execute(("INSERT INTO reports (meta, analysis, compilation, execution, time) "
-            "VALUES (?,?,?,?,?)"), (meta, analysis, compilation, execution, done))
-  c.execute("UPDATE jobs SET status=? WHERE job_id=?;" (job_id, JOB_STATUS_DONE))
+  c.execute(("INSERT INTO reports (job_id, meta, analysis, compilation, "
+            "execution, time, code) VALUES (?,?,?,?,?,?)"),
+            (job_id, meta, analysis, compilation, execution, done, finalcode))
+  c.execute("UPDATE jobs SET status=? WHERE job_id=?;" (job_id, STATUS_DONE))
   cxn.commit()
   c.close()
   cxn.close()
+  folder_cleanup()
   sys.exit(0)
+
+def folder_cleanup():
+  runsafe("rm -rf .", 10)
+  runsafe("touch .gitkeep", 10)
