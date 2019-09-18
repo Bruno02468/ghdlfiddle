@@ -4,7 +4,8 @@ CREATE TABLE "jobs" (
 	"code"	TEXT NOT NULL,
 	"testbench_id"	INTEGER NOT NULL,
 	"status"	INTEGER NOT NULL,
-	"ip"	TEXT NOT NULL
+	"ip"	TEXT NOT NULL,
+	"vcd"	INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE "reports" (
@@ -14,7 +15,8 @@ CREATE TABLE "reports" (
 	"compilation"	TEXT NOT NULL,
 	"execution"	TEXT NOT NULL,
 	"time"	TEXT NOT NULL,
-	"code"	INTEGER
+	"code"	INTEGER,
+	"job_id"	INTEGER NOT NULL UNIQUE
 );
 
 CREATE TABLE "testbenches" (
@@ -32,4 +34,6 @@ CREATE TABLE "admins" (
 );
 
 INSERT INTO admins (name, salt, opaque)
-	VALUES ("borges", "LE_SALT", "979108b9e9a79c7c2fe2588ce4ce7886b2e463f9ac93e15d959a42d3eb25f645bf4af0d174450cc91fd63684d976de3533ae26a1a02e9bc93e208b1d03d7e960");
+	VALUES ("borges", "LE_SALT", "afe4aa22ddbb35ffd2d21dd830f1682b9b1cc3732abe62bb00404129d297b93c7a099ff8ccecb55c26abcbce3cf6eec91b3dc4f3b8b4c964262a515c02cf7127");
+INSERT INTO admins (name, salt, opaque)
+	VALUES ("gjvnq", "SAL_DO_GABRIEL", "f34e3cbf10965c3fcc49b665affe6b7db3cb55711d8b636d1a86d321041a768752373eaed20f919feefdb7191e8be2f6c06bc5ed3e4c879dd40e8d962fb43b42");

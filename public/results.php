@@ -8,10 +8,10 @@ if (!isset($_GET["h"])) {
 // basic setup
 
 $hint = $_GET["h"];
-$cxn = new SQLite3("../database.db");
-$stmt = $cxn->prepare("SELECT job_id, status FROM jobs WHERE hint=?;");
-$stmt->bindValue($hint);
-$job = $stmt->fetchArray();
+$cxn = new SQLite3("../server/database.db");
+$stmt = $cxn->prepare("SELECT job_id, status, vcd FROM jobs WHERE hint=?;");
+$stmt->bindValue(1, $hint);
+$job = $stmt->execute()->fetchArray();
 
 if (!$job) {
   header("Location: ./");
@@ -22,25 +22,27 @@ if ($job["status"] < 2) {
   // job is enqueued or runninng, prepare to inform user
   $mode = "bluish";
   if ($job["status"]) {
-    // enqueued
-    $ahc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status<2 AND"
-      . "job_id < ?;");
-    $ahc->bindValue($job["job_id"]);
-    $ahead = $ahc->execute()->fetchArray()["count"];
-    $status = "IN QUEUE, with $ahead jobs ahead of it.";
-  } else {
     // running
     $status = "RUNNING, please refresh shortly.";
+  } else {
+    // enqueued
+    $ahc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status<2 AND"
+      . " job_id < ?;");
+    $ahc->bindValue(1, $job["job_id"]);
+    $ahead = $ahc->execute()->fetchArray()["count"];
+    $status = "IN QUEUE, with $ahead jobs ahead of it.<br>"
+      . "Refresh to see if it's gone up!";
   }
 } else {
   // job is finished, we better get some results going on
   // first, fetch the report
   $rhc = $cxn->prepare("SELECT * FROM reports WHERE job_id=?;");
-  $rhc->bindValue($job_id);
+  $rhc->bindValue(1, $job["job_id"]);
   $report = $rhc->execute()->fetchArray();
-  if (!report) {
+  if (!$report) {
     die("Job is FINISHED but no report exists. Report this!");
   }
+	$status = "DONE RUNNING.";
   if ($report["code"] < 0) {
     $rcode = "NOT GOOD";
     $mode = "reddish";
@@ -61,7 +63,7 @@ if ($job["status"] < 2) {
     <meta name="description" content="ghdlfiddle">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle - results</title>
-    <link href="//fonts.googleapis.com/css?family=raleway:400,300,600"
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
     rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css"
     href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
@@ -72,21 +74,30 @@ if ($job["status"] < 2) {
   <body class="<?php echo $mode; ?>">
     <div class="container center">
       <h1>ghldfiddle</h1>
-      <h2>test ghdl code on the fly</h2>
-      <br>
-      <br>
+      <h5>test ghdl code on the fly</h5>
+			<br>
+			<a href="./">Back to main page</a>
+			<br>
+			<br>
       <b>
         Save 
         <a href="results.php?h=<?php echo $hint; ?>">this URL</a>,
-        it's the only way to access the results.
+        it's the only way to access this job's results.
       </b><br>
       <br>
       <br>
-      <span class="status"> Your job is <?php echo $status; ?></span>
-      <div class="results">
-        <span id="rcode">General result: <?php echo $rcode; ?></span>
+      <h4 class="status"> Your job is <?php echo $status; ?></h4>
+<?php if (isset($rcode)) { ?>
+			<br>
+      <h5 class="results">
+        <div id="rcode">General result: <?php echo $rcode; ?></div>
         <br>
         <br>
+				<?php if ($job["vcd"]) { ?>
+				A VCD file is
+				<a target="_blank" download href="vcd/<?php echo $hint ?>.vcd"
+				>available!</a>
+				<?php } ?>
         Here's the outputs:<br>
         <br>
         <div class="row">
@@ -110,7 +121,8 @@ if ($job["status"] < 2) {
             <div class="output"><?php echo $report["execution"]; ?></div>
           </div>
         </div>
-      </div>
+      </h5>
+<?php } ?>
       <br>
       <br>
       <br>

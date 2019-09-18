@@ -1,11 +1,3 @@
-<?php
-
-$cxn = new SQLite3("../server/database.db");
-$tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches;");
-$jsin = "";
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,52 +5,35 @@ $jsin = "";
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="ghdlfiddle">
     <meta name="author" content="Bruno Borges Paschoalinoto">
-    <title>ghdlfiddle</title>
+    <title>ghdlfiddle - upload testbench</title>
+    <link rel="stylesheet" href="ghdlfiddle.css">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
     rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css"
     href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" type="text/css"
     href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <link rel="stylesheet" href="ghdlfiddle.css">
   </head>
   <body>
     <div class="container center">
 			<h1>ghldfiddle</h1>
 			<h5>test ghdl code on the fly</h5>
       <br>
-			<form method="POST" action="enqueue.php">
-				<div class="row">
-					<div class="twelve columns">Paste your code down here:</div>
-					<textarea name="code" id="code"></textarea>
-				</div>
-				<br>
-				<br>
-				Select a testbench to test against:
-				<select id="testbench" name="testbench" oninput="update_description()">
-<?php while ($tb = $tbs->fetchArray()) { ?>
-						<option value="<?php echo $tb["testbench_id"]; ?>">
-<?php echo htmlspecialchars($tb["name"]) ?>
-						</option>
-<?php
-$jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
-  . json_encode($tb["description"]) . ");"; }
-?>
-				</select>
-        <br>
-        <i id="description"></i>
+			<form method="POST" action="send_tb.php" enctype="multipart/form-data">
+				Testbench name:
+				<input type="text" name="name"><br>
+				Testbench description and instructions:<br>
+        <textarea name="description"></textarea>
         <br>
         <br>
+        ZIP file: <input type="file" name="zipfile"><br>
         <br>
-        <input type="submit" value="Queue!">
+        Username: <input type="text" name="username"><br>
+        Password: <input type="password" name="password"><br>
+        <br>
+        <input type="submit" value="Upload testbench!">
 			</form>
 			<br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <br>
       <i>
         © 2019
@@ -70,9 +45,5 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
       <br>
       <br>
 		</div>
-		<script>
-		let descriptions = {};
-<?php echo $jsin . file_get_contents("index.js"); ?>
-		</script>
   </body>
 </html>

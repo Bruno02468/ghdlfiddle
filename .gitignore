@@ -4,3 +4,6 @@ server/sandbox/*
 !server/sandbox/.gitkeep
 # also ignore the database
 server/database.db
+# ignore all vcds
+public/vcd/*.vcd
+

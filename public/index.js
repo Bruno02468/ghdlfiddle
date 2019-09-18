@@ -6,3 +6,5 @@ let descs_out = document.getElementById("description");
 function update_description() {
   descs_out.innerText = descriptions[parseInt(tb_sel.value)];
 }
+
+update_description();

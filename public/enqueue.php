@@ -6,8 +6,12 @@ $ip = $_SERVER["REMOTE_ADDR"];
 $tb_id = $_POST["testbench"];
 $code = $_POST["code"];
 $stmt = $cxn->prepare("INSERT INTO jobs (hint, ip, testbench_id, code, status) "
-  . "(?, ?, ?, ?, ?);");
-$stmt->bindValue($hint, $ip, $tb_id, $code, 0);
+  . "VALUES (?, ?, ?, ?, ?);");
+$stmt->bindValue(1, $hint);
+$stmt->bindValue(2, $ip);
+$stmt->bindValue(3, $tb_id);
+$stmt->bindValue(4, $code);
+$stmt->bindValue(5, 0);
 $stmt->execute();
 $cxn->close();
 
