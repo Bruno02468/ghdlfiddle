@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ghdlfiddle">
+    <meta name="description" content="ghdlfiddle - upload testbench">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle - upload testbench</title>
     <link rel="stylesheet" href="ghdlfiddle.css">

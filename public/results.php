@@ -68,7 +68,7 @@ if ($job["status"] < 2) {
 		</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ghdlfiddle">
+    <meta name="description" content="ghdlfiddle - results">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle - results</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"

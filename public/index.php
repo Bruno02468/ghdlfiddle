@@ -19,7 +19,7 @@ $jsin = "";
 		</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ghdlfiddle">
+    <meta name="description" content="run ghdl testbenches on the fly">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
