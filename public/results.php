@@ -81,7 +81,7 @@ if ($job["status"] < 2) {
   </head>
   <body class="<?php echo $mode; ?>">
     <div class="container center">
-      <h1>ghldfiddle</h1>
+      <h1>ghdlfiddle</h1>
       <h5>test ghdl code on the fly</h5>
 			<br>
 			<a href="./">Back to main page</a>

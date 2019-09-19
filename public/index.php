@@ -32,7 +32,7 @@ $jsin = "";
   </head>
   <body>
     <div class="container center">
-			<h1>ghldfiddle</h1>
+			<h1>ghdlfiddle</h1>
 			<h5>test ghdl code on the fly</h5>
       <br>
 			<form method="POST" action="enqueue.php">
