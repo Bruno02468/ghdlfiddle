@@ -17,7 +17,7 @@
   <body>
     <div class="container center">
 			<h1>ghdlfiddle</h1>
-			<h5>test ghdl code on the fly</h5>
+			<h5>open-source vhdl judge</h5>
       <br>
 			<form method="POST" action="send_tb.php" enctype="multipart/form-data">
 				Testbench name:

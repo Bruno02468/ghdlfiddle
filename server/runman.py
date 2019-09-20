@@ -19,7 +19,7 @@ STATUS_RUNNING = 1
 STATUS_DONE = 2
 SETUP = "make setup"
 ANALYSE = "ghdl -a target.vhd > a.log 2>&1"
-ANALYSE_TB = "ghdl -a tb.vhd > a.log 2>&1"
+ANALYSE_TB = "ghdl -a tb.vhd"
 ELABORATE = "ghdl -e tb > e.log 2>&1"
 NO_ANALYSIS = "cat: a.log: No such file or directory"
 NO_ELABORATION = "cat: e.log: No such file or directory"
@@ -43,10 +43,10 @@ from shlex import quote
 def runsafe(command, seconds):
   return check_output("cd %s && firejail --quiet --private=. %s"
                       % (SANDBOX, command), stderr=STDOUT,
-                      timeout=seconds, shell=True).decode("utf-8")
+                      timeout=seconds*20, shell=True).decode("utf-8")
 def folder_cleanup():
-  runsafe("rm -rf ./*", 10)
-  runsafe("touch .gitkeep", 10)
+  runsafe("rm -rf ./*", 2)
+  runsafe("touch .gitkeep", 2)
 
 folder_cleanup()
 

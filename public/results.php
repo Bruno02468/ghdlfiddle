@@ -82,7 +82,7 @@ if ($job["status"] < 2) {
   <body class="<?php echo $mode; ?>">
     <div class="container center">
       <h1>ghdlfiddle</h1>
-      <h5>test ghdl code on the fly</h5>
+      <h5>open-source vhdl judge</h5>
 			<br>
 			<a href="./">Back to main page</a>
 			<br>
