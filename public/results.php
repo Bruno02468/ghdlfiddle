@@ -134,10 +134,6 @@ if ($job["status"] < 2) {
       <br>
       <br>
       <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <i>
         © 2019
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>

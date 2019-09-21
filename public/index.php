@@ -3,7 +3,8 @@
 $cxn = new SQLite3("../server/database.db");
 $tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches;");
 $jsin = "";
-
+$sc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status=2;");
+$c = $sc->execute()->fetchArray()["count"];
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +35,11 @@ $jsin = "";
     <div class="container center">
 			<h1>ghdlfiddle</h1>
 			<h5>open-source vhdl judge</h5>
-      <br>
+			Submissions run so far:
+			<b><?php echo $c; ?></b> =)
+			<br>
+			<br>
+			<br>
 			<form method="POST" action="enqueue.php">
 				<div class="row">
 					<div class="twelve columns">Paste your code down here:</div>
@@ -61,11 +66,6 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
         <input type="submit" value="Queue!">
 			</form>
 			<br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <br>
       <br>
       <i>

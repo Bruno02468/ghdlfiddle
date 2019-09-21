@@ -45,6 +45,7 @@ def runsafe(command, seconds):
                       % (SANDBOX, command), stderr=STDOUT,
                       timeout=seconds*20, shell=True).decode("utf-8")
 def folder_cleanup():
+  os.system("killall -9 tb >/dev/null 2>&1");
   runsafe("rm -rf ./*", 2)
   runsafe("touch .gitkeep", 2)
 
