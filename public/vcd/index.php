@@ -1,6 +1,6 @@
 <?php
 
-header("Location: ./");
+header("Location: ../");
 die("Nice try.");
 
 ?>
