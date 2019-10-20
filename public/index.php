@@ -1,7 +1,7 @@
 <?php
-
 $cxn = new SQLite3("../server/database.db");
-$tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches;");
+$tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches "
+	. "ORDER BY testbench_id DESC;");
 $jsin = "";
 $sc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status=2;");
 $c = $sc->execute()->fetchArray()["count"];
@@ -20,7 +20,7 @@ $c = $sc->execute()->fetchArray()["count"];
 		</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="run ghdl testbenches on the fly">
+    <meta name="description" content="open-source vhdl judge">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
