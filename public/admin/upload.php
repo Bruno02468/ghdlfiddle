@@ -1,3 +1,8 @@
+<?php
+require_once("funcs.php");
+require_login();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +11,7 @@
     <meta name="description" content="ghdlfiddle - upload testbench">
     <meta name="author" content="Bruno Borges Paschoalinoto">
     <title>ghdlfiddle - upload testbench</title>
-    <link rel="stylesheet" href="ghdlfiddle.css">
+    <link rel="stylesheet" href="../ghdlfiddle.css">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
     rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css"
@@ -27,9 +32,6 @@
         <br>
         <br>
         ZIP file: <input type="file" name="zipfile"><br>
-        <br>
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
         <br>
         <input type="submit" value="Upload testbench!">
 			</form>

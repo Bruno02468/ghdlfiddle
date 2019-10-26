@@ -33,6 +33,14 @@ CREATE TABLE "admins" (
 	"opaque"	TEXT NOT NULL
 );
 
+CREATE TABLE "tokens" (
+	"token_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"code"	TEXT NOT NULL UNIQUE,
+	"username"	TEXT NOT NULL,
+	"expires"	INTEGER NOT NULL,
+	"revoked"	INTEGER NOT NULL DEFAULT 0
+);
+
 INSERT INTO admins (name, salt, opaque)
 	VALUES ("borges", "LE_SALT", "afe4aa22ddbb35ffd2d21dd830f1682b9b1cc3732abe62bb00404129d297b93c7a099ff8ccecb55c26abcbce3cf6eec91b3dc4f3b8b4c964262a515c02cf7127");
 INSERT INTO admins (name, salt, opaque)
