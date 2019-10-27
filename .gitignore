@@ -6,4 +6,7 @@ server/sandbox/*
 server/database.db
 # ignore all vcds
 public/vcd/*.vcd
-
+# ignore the work folder of the testbench maker
+tools/tb_maker/work/*
+# except for its gitkeep
+!tools/tb_maker/work/.gitkeep

@@ -37,7 +37,6 @@ import sys
 import os
 import base64
 from subprocess import STDOUT, check_output
-from shlex import quote
 
 # run a command safely with timeout and get the output
 def runsafe(command, seconds):
