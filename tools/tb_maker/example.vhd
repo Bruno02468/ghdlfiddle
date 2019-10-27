@@ -1,4 +1,5 @@
--- Não submeter esse arquivo!
+-- example testbench skeleton for an n-bit ALU
+-- based on gjvnq's original, hand-made testbench
 library ieee;
 USE ieee.math_real.ceil;
 USE ieee.math_real.log2;
