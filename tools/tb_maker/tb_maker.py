@@ -18,6 +18,7 @@
 #   - skeleton.vhd file, basically, a regular testbench, but with the "inputs"
 #     and "asserts" replaced by a comment that reads "-- SKELETON".
 #   - gjvnq's "utils.vhd" library, current copy is here
+# mind you, an example skeleton a json specs file are supplied in this folder.
 
 # I will do the following:
 #   - first, I will use the "skeleton.vhd" file and the input specs to create
@@ -36,15 +37,16 @@
 BAD = "ghdlfiddle:BAD"
 GOOD = "ghdlfiddle:GOOD"
 DEBUG = "ghdlfiddle:DEBUG"
+FINISHED = GOOD + " -- Testbench finished executing."
 TB = "tb.vhd"
 TARGET = "target.vhd"
 SKELETON = "skeleton.vhd"
 SKEL_LINE = "-- SKELETON HERE"
-PREPARE = "make setup"
+PREPARE = "make setup >/dev/null"
 ANALYSE = "ghdl -a %s; ghdl -a %s" % (TARGET, TB)
 ELABORATE = "ghdl -e tb"
 RUN = "ghdl -r tb"
-CLEANUP = "rm -f *.o *.cf *.log"
+CLEANUP = "rm -f *.o *.cf target.vhd tb"
 
 
 # now, import some stuff!
@@ -79,9 +81,9 @@ def vhdl_assign(ins, delay, expects=None, outs_names=None):
     # making the final testbench
     for name, bits in expects.items():
       code += "assert (%s = %s)\nreport " % (name, vhdl_binary(bits))
-      code += ("\"%s\\nwith inputs: %s\\nexpected %s to be %s, got %s!\\n\";\n"
-               % (BAD, str(ins), name, vhdl_binary(bits),
-                  "\"&bin(" + name + ")&\""))
+      code += (("\"  -- %s --\\n    · with inputs: %s\\n    · expected %s to "
+               + "be %s, got %s!\\n\";\n")
+               % (BAD, str(ins), name, bits, "\"&bin(" + name + ")&\""))
   else:
     # if a list of expectations is not given, I'll merely have the testbench
     # print out the outputs as a JSON line
@@ -100,21 +102,27 @@ def vhdl_fill(ins_list, delay, expects_list=None, outs_names=None):
     ins = ins_list[i]
     expects = expects_list[i] if expects_list else None
     contents += vhdl_assign(ins, delay, expects, outs_names)
+  contents += "report \"%s\";\nwait;\n" % (FINISHED,)
   os.system("cp %s %s" % (SKELETON, TB))
   with open(TB, "r") as f:
     skel = f.read()
-  filled = skel.replace(SKEL_LINE, contents)
+  filled = skel.replace(SKEL_LINE, contents).replace("\\n", "\"&LF&\"")
   with open(TB, "w") as f:
     f.write(filled)
 
 # auxiliary function to run a certain "good" assignment and get the outputs
 # we expect the tb.vhd to be ready
 def vhdl_run(assignment):
+  # first, run and get the output
   os.system("cp %s %s" % (assignment, TARGET))
   os.system(";".join([PREPARE, ANALYSE, ELABORATE]))
   run_output = os.popen(RUN).read()
-  os.system("rm " + TARGET)
-  print(run_output)
+  os.system(CLEANUP)
+  # now, get all outputs
+  outs = []
+  for json_string in re.findall(r"{[^}]*}", run_output):
+    outs.append(json.loads(json_string.replace("'", "\"")))
+  return outs
 
 # get to know the specs
 if len(sys.argv) < 2:
@@ -138,7 +146,29 @@ for name, details in specs["input_sets"].items():
 inputs = [dict(zip(values.keys(), l)) for l in product(*values.values())]
 vhdl_fill(inputs, specs["lag"], outs_names=specs["outputs"])
 
+print("Done! Total inputs: %s." % (str(len(inputs)),))
+
 # and run every "good" assignment against it
 outs = []
 for goodname in specs["run_against"]:
+  print("Running against %s..." % (goodname,))
   outs.append(vhdl_run(goodname))
+
+# now, remove inputs for which good assignments gave different outputs
+disagreements = 0
+final_ins = []
+final_outs = []
+for i in range(len(inputs)):
+  opinions = [a[i] for a in outs]
+  if all(x == opinions[0] for x in opinions):
+    final_ins.append(inputs[i])
+    final_outs.append(opinions[0])
+  else:
+    disagreements += 1
+
+print("Removed %s disagreements." % (str(disagreements),))
+
+# and for out final trick, generate the testbench
+vhdl_fill(inputs, specs["lag"], outs[0])
+
+print("Final testbench saved to %s!" % (TB,))

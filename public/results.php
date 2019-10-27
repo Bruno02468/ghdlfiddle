@@ -70,6 +70,9 @@ if ($job["status"] < 2) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="ghdlfiddle - results">
     <meta name="author" content="Bruno Borges Paschoalinoto">
+<?php if ($job["status"] < 2) { ?>
+		<meta http-equiv="refresh" content="2">
+<?php } ?>
     <title>ghdlfiddle - results</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
     rel="stylesheet" type="text/css">
@@ -126,7 +129,7 @@ if ($job["status"] < 2) {
           </div>
           <div class="six columns">
             Execution (ghdl -r) says:<br>
-            <div class="output"><?php echo $report["execution"]; ?></div>
+            <div class="output term"><?php echo $report["execution"]; ?></div>
           </div>
         </div>
       </h5>

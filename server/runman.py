@@ -24,7 +24,7 @@ ELABORATE = "ghdl -e tb > e.log 2>&1"
 NO_ANALYSIS = "cat: a.log: No such file or directory"
 NO_ELABORATION = "cat: e.log: No such file or directory"
 NO_EXECUTION = "cat: r.log: No such file or directory"
-RUN = "ghdl -r tb --vcd=out.vcd > r.log 2>&1"
+RUN = "ghdl -r tb --stop-delta=5000 --vcd=out.vcd > r.log 2>&1"
 TOTAL_COMMAND = "%s && %s && %s && %s" % (ANALYSE, ANALYSE_TB, ELABORATE, RUN)
 SANDBOX="sandbox"
 ZIPFILE = SANDBOX + "/tb.zip"
@@ -135,9 +135,9 @@ except:
   metas.append("Couldn't complete the three steps.")
   finalcode = -1
 
-analysis = runsafe("cat a.log", 1)
-compilation = runsafe("cat e.log", 1)
-execution = runsafe("cat r.log", 1)
+analysis = runsafe("cat a.log", 3)
+compilation = runsafe("cat e.log", 3)
+execution = runsafe("cat r.log", 3)
 
 if analysis == "":
   analysis = "Analysis output empty; probably successful."
@@ -156,11 +156,14 @@ meta = "<br>".join(metas)
 if meta == "":
   meta = "No messages from job manager."
 
-
 if "ghdlfiddle:GOOD" in execution:
   finalcode = 1
 if "ghdlfiddle:BAD" in execution or "three" in meta:
   finalcode = -1
+
+if "stop-delta" in execution:
+  finalcode = -1
+  meta = "Computation time exceeded -- simulation could not finish."
 
 finish()
 

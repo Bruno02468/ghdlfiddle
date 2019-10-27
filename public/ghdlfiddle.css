@@ -46,3 +46,9 @@ textarea {
 	border-radius: 0.5em;
 	font-size: 80%;
 }
+
+.term {
+	text-align: left;
+	white-space: pre-wrap;
+	font-size: 50%;
+}
