@@ -80,7 +80,7 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
 		</div>
 		<script>
 		let descriptions = {};
-<?php echo $jsin . file_get_contents("index.js"); ?>
+<?php echo $jsin . file_get_contents("homepage.js"); ?>
 		</script>
   </body>
 </html>

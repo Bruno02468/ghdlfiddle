@@ -9,6 +9,7 @@ if (!isset($_GET["h"])) {
 
 $hint = $_GET["h"];
 $cxn = new SQLite3("../server/database.db");
+$cxn->busyTimeout(3000);
 $stmt = $cxn->prepare("SELECT job_id, status, vcd FROM jobs WHERE hint=?;");
 $stmt->bindValue(1, $hint);
 $job = $stmt->execute()->fetchArray();
@@ -129,7 +130,7 @@ if ($job["status"] < 2) {
           </div>
           <div class="six columns">
             Execution (ghdl -r) says:<br>
-            <div class="output term"><?php echo $report["execution"]; ?></div>
+            <div class="output"><?php echo $report["execution"]; ?></div>
           </div>
         </div>
       </h5>
@@ -147,5 +148,6 @@ if ($job["status"] < 2) {
       <br>
       <br>
 		</div>
+		<script src="outputs.js"></script>
   </body>
 </html>

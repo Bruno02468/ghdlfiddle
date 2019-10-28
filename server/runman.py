@@ -48,6 +48,12 @@ def folder_cleanup():
   runsafe("rm -rf ./*", 2)
   runsafe("touch .gitkeep", 2)
 
+def readsafe(file):
+  try:
+    return runsafe("cat %s" % (file,), 3)
+  except:
+    return ""
+
 folder_cleanup()
 
 # we'll use the same connection throughout our entire run, maybe locks can make
@@ -135,20 +141,15 @@ except:
   metas.append("Couldn't complete the three steps.")
   finalcode = -1
 
-analysis = runsafe("cat a.log", 3)
-compilation = runsafe("cat e.log", 3)
-execution = runsafe("cat r.log", 3)
+analysis = readsafe("a.log")
+compilation = readsafe("e.log")
+execution = readsafe("r.log")
 
-if analysis == "":
-  analysis = "Analysis output empty; probably successful."
-if compilation == "":
-  compilation = "Compilation output empty; probably successful."
-
-if NO_ANALYSIS in analysis:
+if NO_ANALYSIS in analysis or analysis == "":
   analysis = "No analysis log was generated."
-if NO_ELABORATION in compilation:
+if NO_ELABORATION in compilation or compilation == "":
   compilation = "No compilation log was generated."
-if NO_EXECUTION in execution:
+if NO_EXECUTION in execution or execution == "":
   execution = "No execution log was generated."
 
 meta = "<br>".join(metas)

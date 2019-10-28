@@ -159,7 +159,7 @@ disagreements = 0
 final_ins = []
 final_outs = []
 for i in range(len(inputs)):
-  opinions = [a[i] for a in outs]
+  opinions = [dude[i] for dude in outs]
   if all(x == opinions[0] for x in opinions):
     final_ins.append(inputs[i])
     final_outs.append(opinions[0])
@@ -169,6 +169,6 @@ for i in range(len(inputs)):
 print("Removed %s disagreements." % (str(disagreements),))
 
 # and for out final trick, generate the testbench
-vhdl_fill(inputs, specs["lag"], outs[0])
+vhdl_fill(final_ins, specs["lag"], final_outs)
 
 print("Final testbench saved to %s!" % (TB,))

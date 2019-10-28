@@ -52,3 +52,7 @@ textarea {
 	text-align: left;
 	font-size: 50%;
 }
+
+.term b {
+  font-weight: bold;
+}
