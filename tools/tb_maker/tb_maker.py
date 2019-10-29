@@ -71,25 +71,27 @@ def vhdl_wait(delay):
 
 # auxiliary function to turn an input dict into a wait-guarded series of
 # assignments, and asserts their values if a dict of outputs is given
-def vhdl_assign(ins, delay, expects=None, outs_names=None):
+def vhdl_assign(ins, delay, outs_names, expects=None):
   code = vhdl_wait(delay)
   for name, bits in ins.items():
     code += name + " <= " + vhdl_binary(bits) + ";\n"
   code += vhdl_wait(delay)
+  outs_report = "{" + ",".join(["'%s': '\"&bin(%s)&\"'" % (name, name)
+                         for name in outs_names]) + "}";
   if expects:
     # if a list of expectations is given, I'll create asserts, for we are
     # making the final testbench
     for name, bits in expects.items():
       code += "assert (%s = %s)\nreport " % (name, vhdl_binary(bits))
-      code += (("\"  -- %s --\\n    · with inputs: %s\\n    · expected %s to "
+      code += (("\"  -- %s --\\n    · with inputs: %s\\n    · with outputs: %s"
+               + "\\n    · expected %s to "
                + "be %s, got %s!\\n\";\n")
-               % (BAD, str(ins), name, bits, "\"&bin(" + name + ")&\""))
+               % (BAD, str(ins), outs_report, name, bits,
+                  "\"&bin(" + name + ")&\""))
   else:
     # if a list of expectations is not given, I'll merely have the testbench
     # print out the outputs as a JSON line
-    outs = ["'%s': '\"&bin(%s)&\"'" % (name, name)
-            for name in outs_names]
-    code += "report \"{" + ",".join(outs) + "}\";\n"
+    code += "report \"" + outs_report + "\";\n"
   code += "\n"
 
   return code
@@ -101,7 +103,7 @@ def vhdl_fill(ins_list, delay, expects_list=None, outs_names=None):
   for i in range(len(ins_list)):
     ins = ins_list[i]
     expects = expects_list[i] if expects_list else None
-    contents += vhdl_assign(ins, delay, expects, outs_names)
+    contents += vhdl_assign(ins, delay, outs_names, expects)
   contents += "report \"%s\";\nwait;\n" % (FINISHED,)
   os.system("cp %s %s" % (SKELETON, TB))
   with open(TB, "r") as f:
@@ -144,7 +146,7 @@ for name, details in specs["input_sets"].items():
 
 # now, combine them! how elegant... and also make the preliminary testbench
 inputs = [dict(zip(values.keys(), l)) for l in product(*values.values())]
-vhdl_fill(inputs, specs["lag"], outs_names=specs["outputs"])
+vhdl_fill(inputs, specs["lag"], None, specs["outputs"])
 
 print("Done! Total inputs: %s." % (str(len(inputs)),))
 
@@ -169,6 +171,6 @@ for i in range(len(inputs)):
 print("Removed %s disagreements." % (str(disagreements),))
 
 # and for out final trick, generate the testbench
-vhdl_fill(final_ins, specs["lag"], final_outs)
+vhdl_fill(final_ins, specs["lag"], final_outs, specs["outputs"])
 
 print("Final testbench saved to %s!" % (TB,))
