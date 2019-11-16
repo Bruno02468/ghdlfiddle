@@ -1,10 +1,21 @@
 <?php
 $cxn = new SQLite3("../server/database.db");
+$cxn->busyTimeout(3000);
+
+// get all testbenches to fill select tag
 $tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches "
 	. "ORDER BY testbench_id DESC;");
 $jsin = "";
 $sc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status=2;");
 $c = $sc->execute()->fetchArray()["count"];
+
+// check if google recaptcha is a thing
+$sitekey = $cxn->querySingle("SELECT value FROM config WHERE "
+  . "key=\"grecaptcha_sitekey\";");
+$secretkey = $cxn->querySingle("SELECT value FROM config WHERE "
+  . "key=\"grecaptcha_secretkey\";");
+$grecaptcha_enabled = $sitekey && $secretkey;
+
 ?>
 
 <!DOCTYPE html>
@@ -61,6 +72,17 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
         <br>
         <i id="description"></i>
         <br>
+<?php if ($grecaptcha_enabled) { ?>
+        <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $sitekey; ?>"></script>
+        <script>
+        grecaptcha.ready(function() {
+          grecaptcha.execute("<?php echo $sitekey; ?>", {action: "enqueue"}).then(function(token) {
+            document.getElementById("gv3_token").value = token;
+          });
+        });
+        </script>
+        <input type="hidden" value="" name="grecaptcha_token" id="gv3_token">
+<?php } ?>
         <br>
         <br>
         <input type="submit" value="Queue!">

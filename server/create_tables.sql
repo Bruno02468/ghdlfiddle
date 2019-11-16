@@ -41,7 +41,15 @@ CREATE TABLE "tokens" (
 	"revoked"	INTEGER NOT NULL DEFAULT 0
 );
 
+CREATE TABLE "config" (
+	"key"	TEXT NOT NULL UNIQUE,
+	"value"	TEXT
+);
+
 INSERT INTO admins (name, salt, opaque)
 	VALUES ("borges", "LE_SALT", "afe4aa22ddbb35ffd2d21dd830f1682b9b1cc3732abe62bb00404129d297b93c7a099ff8ccecb55c26abcbce3cf6eec91b3dc4f3b8b4c964262a515c02cf7127");
 INSERT INTO admins (name, salt, opaque)
 	VALUES ("gjvnq", "SAL_DO_GABRIEL", "f34e3cbf10965c3fcc49b665affe6b7db3cb55711d8b636d1a86d321041a768752373eaed20f919feefdb7191e8be2f6c06bc5ed3e4c879dd40e8d962fb43b42");
+
+INSERT INTO config (key, value) VALUES ("grecaptcha_sitekey", NULL);
+INSERT INTO config (key, value) VALUES ("grecaptcha_secretkey", NULL);
