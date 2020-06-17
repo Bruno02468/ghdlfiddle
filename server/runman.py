@@ -24,7 +24,7 @@ ELABORATE = "ghdl -e tb > e.log 2>&1"
 NO_ANALYSIS = "cat: a.log: No such file or directory"
 NO_ELABORATION = "cat: e.log: No such file or directory"
 NO_EXECUTION = "cat: r.log: No such file or directory"
-RUN = "ghdl -r tb --stop-delta=5000 --vcd=out.vcd > r.log 2>&1"
+RUN = "ghdl -r tb --stop-delta=5000 --stop-time=1000ms --vcd=out.vcd > r.log 2>&1"
 TOTAL_COMMAND = "%s && %s && %s && %s" % (ANALYSE, ANALYSE_TB, ELABORATE, RUN)
 SANDBOX="sandbox"
 ZIPFILE = SANDBOX + "/tb.zip"
