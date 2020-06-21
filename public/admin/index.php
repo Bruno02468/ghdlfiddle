@@ -37,7 +37,6 @@ $tbs = dbcxn()->query("SELECT testbench_id, name, description FROM testbenches "
       <h1>ghdlfiddle</h1>
       <h5>open-source vhdl judge</h5>
       <br>
-      <br>
       <h5>
         <a href="../">Back to main page...</a><br>
         <a href="logoff.php">Log off</a><br>
