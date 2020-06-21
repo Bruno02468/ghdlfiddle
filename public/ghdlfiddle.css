@@ -5,52 +5,57 @@
 }
 
 textarea {
-	height: 10em;
-	width: 70%;
+  height: 10em;
+  width: 70%;
+}
+
+a {
+  /* don't do that. don't give me hope. */
+  text-decoration-skip: leading-spaces trailing-spaces;
 }
 
 #rcode {
-	display: inline-block;
-	padding-left: 1em;
-	padding-right: 1em;
+  display: inline-block;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .bluish #rcode {
-	border: 2px solid blue;
-	background-color: lightblue;
-	border-radius: 0.5em;
+  border: 2px solid blue;
+  background-color: lightblue;
+  border-radius: 0.5em;
 }
 
 .reddish #rcode {
-	border: 2px solid red;
-	background-color: salmon;
-	border-radius: 0.5em;
+  border: 2px solid red;
+  background-color: salmon;
+  border-radius: 0.5em;
 }
 
 .greenish #rcode {
-	border: 2px solid green;
-	background-color: lightgreen;
-	border-radius: 0.5em;
+  border: 2px solid green;
+  background-color: lightgreen;
+  border-radius: 0.5em;
 }
 
 .yellowish #rcode {
-	border: 2px solid darkorange;
-	background-color: orange;
-	border-radius: 0.5em;
+  border: 2px solid darkorange;
+  background-color: orange;
+  border-radius: 0.5em;
 }
 
 .output {
-	font-family: monospace;
-	background-color: #EEE;
-	border: 2px solid #DDD;
-	border-radius: 0.5em;
-	font-size: 80%;
-	white-space: pre-wrap;
+  font-family: monospace;
+  background-color: #EEE;
+  border: 2px solid #DDD;
+  border-radius: 0.5em;
+  font-size: 80%;
+  white-space: pre-wrap;
 }
 
 .term {
-	text-align: left;
-	font-size: 50%;
+  text-align: left;
+  font-size: 50%;
 }
 
 .term b {

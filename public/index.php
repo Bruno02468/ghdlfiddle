@@ -4,7 +4,7 @@ $cxn->busyTimeout(3000);
 
 // get all testbenches to fill select tag
 $tbs = $cxn->query("SELECT testbench_id, name, description FROM testbenches "
-	. "ORDER BY testbench_id DESC;");
+  . "ORDER BY testbench_id DESC;");
 $jsin = "";
 $sc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status=2;");
 $c = $sc->execute()->fetchArray()["count"];
@@ -21,14 +21,14 @@ $grecaptcha_enabled = $sitekey && $secretkey;
 <!DOCTYPE html>
 <html lang="en">
   <head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-22780529-9"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			gtag('config', 'UA-22780529-9');
-		</script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-22780529-9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-22780529-9');
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="open-source vhdl judge">
@@ -44,31 +44,31 @@ $grecaptcha_enabled = $sitekey && $secretkey;
   </head>
   <body>
     <div class="container center">
-			<h1>ghdlfiddle</h1>
-			<h5>open-source vhdl judge</h5>
-			Submissions run so far:
-			<b><?php echo $c; ?></b> =)
-			<br>
-			<br>
-			<br>
-			<form method="POST" action="enqueue.php">
-				<div class="row">
-					<div class="twelve columns">Paste your code down here:</div>
-					<textarea name="code" id="code"></textarea>
-				</div>
-				<br>
-				<br>
-				Select a testbench to test against:
-				<select id="testbench" name="testbench" oninput="update_description()">
+      <h1>ghdlfiddle</h1>
+      <h5>open-source vhdl judge</h5>
+      Submissions run so far:
+      <b><?php echo $c; ?></b> =)
+      <br>
+      <br>
+      <br>
+      <form method="POST" action="enqueue.php">
+        <div class="row">
+          <div class="twelve columns">Paste your code down here:</div>
+          <textarea name="code" id="code"></textarea>
+        </div>
+        <br>
+        <br>
+        Select a testbench to test against:
+        <select id="testbench" name="testbench" oninput="update_description()">
 <?php while ($tb = $tbs->fetchArray()) { ?>
-						<option value="<?php echo $tb["testbench_id"]; ?>">
+            <option value="<?php echo $tb["testbench_id"]; ?>">
 <?php echo htmlspecialchars($tb["name"]) ?>
-						</option>
+            </option>
 <?php
 $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
   . json_encode($tb["description"]) . ");"; }
 ?>
-				</select>
+        </select>
         <br>
         <i id="description"></i>
         <br>
@@ -86,23 +86,23 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
         <br>
         <br>
         <input type="submit" value="Queue!">
-			</form>
-			<br>
+      </form>
+      <br>
       <br>
       <br>
       <i>
-        © 2019
+        © 2019-2020
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
         <br>
-				Some rights reserved under MIT License.
-				<a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
+        Some rights reserved under MIT License.
+        <a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
       </i>
       <br>
       <br>
-		</div>
-		<script>
-		let descriptions = {};
+    </div>
+    <script>
+    let descriptions = {};
 <?php echo $jsin . file_get_contents("homepage.js"); ?>
-		</script>
+    </script>
   </body>
 </html>

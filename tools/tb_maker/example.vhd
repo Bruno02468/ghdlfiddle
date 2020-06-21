@@ -11,7 +11,7 @@ entity tb is
 end tb;
 
 architecture tb of tb is
-    	constant size : natural := 16;
+      constant size : natural := 16;
       signal A, B : bit_vector (size-1 downto 0); -- inputs
       signal F : bit_vector (size-1 downto 0 ) ; -- output
       signal S : bit_vector (3 downto 0); -- op selection

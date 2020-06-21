@@ -1,78 +1,78 @@
-<?php
+  <?php
 
-if (!isset($_GET["h"])) {
-  header("Location: ./");
-  die("Forgot to set the h variable, huh?");
-}
+  if (!isset($_GET["h"])) {
+    header("Location: ./");
+    die("Forgot to set the h variable, huh?");
+  }
 
-// basic setup
+  // basic setup
 
-$hint = $_GET["h"];
-$cxn = new SQLite3("../server/database.db");
-$cxn->busyTimeout(3000);
-$stmt = $cxn->prepare("SELECT job_id, status, vcd FROM jobs WHERE hint=?;");
-$stmt->bindValue(1, $hint);
-$job = $stmt->execute()->fetchArray();
+  $hint = $_GET["h"];
+  $cxn = new SQLite3("../server/database.db");
+  $cxn->busyTimeout(3000);
+  $stmt = $cxn->prepare("SELECT job_id, status, vcd FROM jobs WHERE hint=?;");
+  $stmt->bindValue(1, $hint);
+  $job = $stmt->execute()->fetchArray();
 
-if (!$job) {
-  header("Location: ./");
-  die("Job does not exist. How?");
-}
+  if (!$job) {
+    header("Location: ./");
+    die("Job does not exist. How?");
+  }
 
-if ($job["status"] < 2) {
-  // job is enqueued or runninng, prepare to inform user
-  $mode = "bluish";
-  if ($job["status"]) {
-    // running
-    $status = "RUNNING, please refresh shortly.";
+  if ($job["status"] < 2) {
+    // job is enqueued or runninng, prepare to inform user
+    $mode = "bluish";
+    if ($job["status"]) {
+      // running
+      $status = "RUNNING, please refresh shortly.";
+    } else {
+      // enqueued
+      $ahc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status<2 AND"
+        . " job_id < ?;");
+      $ahc->bindValue(1, $job["job_id"]);
+      $ahead = $ahc->execute()->fetchArray()["count"];
+      $status = "IN QUEUE, with $ahead jobs ahead of it.<br>"
+        . "Refresh to see if it's gone up!";
+    }
   } else {
-    // enqueued
-    $ahc = $cxn->prepare("SELECT COUNT(*) AS count FROM jobs WHERE status<2 AND"
-      . " job_id < ?;");
-    $ahc->bindValue(1, $job["job_id"]);
-    $ahead = $ahc->execute()->fetchArray()["count"];
-    $status = "IN QUEUE, with $ahead jobs ahead of it.<br>"
-      . "Refresh to see if it's gone up!";
-  }
-} else {
-  // job is finished, we better get some results going on
-  // first, fetch the report
-  $rhc = $cxn->prepare("SELECT * FROM reports WHERE job_id=?;");
-  $rhc->bindValue(1, $job["job_id"]);
-  $report = $rhc->execute()->fetchArray();
-  if (!$report) {
-    die("Job is FINISHED but no report exists. Report this!");
-  }
-	$status = "DONE RUNNING.";
-  if ($report["code"] < 0) {
-    $rcode = "NOT GOOD";
-    $mode = "reddish";
-  } elseif ($report["code"] > 0) {
-    $rcode = "GOOD";
-    $mode = "greenish";
-  } else {
-    $rcode = "NOT SURE";
-    $mode = "yellowish";
-  }
+    // job is finished, we better get some results going on
+    // first, fetch the report
+    $rhc = $cxn->prepare("SELECT * FROM reports WHERE job_id=?;");
+    $rhc->bindValue(1, $job["job_id"]);
+    $report = $rhc->execute()->fetchArray();
+    if (!$report) {
+      die("Job is FINISHED but no report exists. Report this!");
+    }
+    $status = "DONE RUNNING.";
+    if ($report["code"] < 0) {
+      $rcode = "NOT GOOD";
+      $mode = "reddish";
+    } elseif ($report["code"] > 0) {
+      $rcode = "GOOD";
+      $mode = "greenish";
+    } else {
+      $rcode = "NOT SURE";
+      $mode = "yellowish";
+    }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-22780529-9"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			gtag('config', 'UA-22780529-9');
-		</script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-22780529-9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-22780529-9');
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="ghdlfiddle - results">
     <meta name="author" content="Bruno Borges Paschoalinoto">
 <?php if ($job["status"] < 2) { ?>
-		<meta http-equiv="refresh" content="2">
+    <meta http-equiv="refresh" content="2">
 <?php } ?>
     <title>ghdlfiddle - results</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
@@ -87,10 +87,10 @@ if ($job["status"] < 2) {
     <div class="container center">
       <h1>ghdlfiddle</h1>
       <h5>open-source vhdl judge</h5>
-			<br>
-			<a href="./">Back to main page</a>
-			<br>
-			<br>
+      <br>
+      <a href="./">Back to main page</a>
+      <br>
+      <br>
       <b>
         Save 
         <a href="results.php?h=<?php echo $hint; ?>">this URL</a>,
@@ -100,16 +100,16 @@ if ($job["status"] < 2) {
       <br>
       <h4 class="status"> Your job is <?php echo $status; ?></h4>
 <?php if (isset($rcode)) { ?>
-			<br>
+      <br>
       <h5 class="results">
         <div id="rcode">General result: <?php echo $rcode; ?></div>
         <br>
         <br>
-				<?php if ($job["vcd"]) { ?>
-				A VCD file is
-				<a target="_blank" download href="vcd/<?php echo $hint ?>.vcd"
-				>available!</a>
-				<?php } ?>
+        <?php if ($job["vcd"]) { ?>
+        A VCD file is
+        <a target="_blank" download href="vcd/<?php echo $hint ?>.vcd"
+        >available!</a>
+        <?php } ?>
         Here's the outputs:<br>
         <br>
         <div class="row">
@@ -139,15 +139,15 @@ if ($job["status"] < 2) {
       <br>
       <br>
       <i>
-        © 2019
+        © 2019-2020
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
         <br>
-				Some rights reserved under the MIT License.
-				<a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
+        Some rights reserved under the MIT License.
+        <a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
       </i>
       <br>
       <br>
-		</div>
-		<script src="outputs.js"></script>
+    </div>
+    <script src="outputs.js"></script>
   </body>
 </html>

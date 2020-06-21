@@ -36,14 +36,14 @@ package body utils is
         end if;
     end function;
 
-	function bin (lvec: in bit_vector) return string is
-	begin
-		return bin(To_StdLogicVector(lvec));
+  function bin (lvec: in bit_vector) return string is
+  begin
+    return bin(To_StdLogicVector(lvec));
     end function;
 
     function hex (lvec: in bit_vector) return string is
-	begin
-		return hex(To_StdLogicVector(lvec));
+  begin
+    return hex(To_StdLogicVector(lvec));
     end function;
 
     function bin (lvec: in std_logic_vector) return string is

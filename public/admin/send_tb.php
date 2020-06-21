@@ -3,7 +3,6 @@
 require_once("funcs.php");
 require_login();
 
-
 $cxn = dbcxn();
 $name = $_POST["name"];
 $description = $_POST["description"];
