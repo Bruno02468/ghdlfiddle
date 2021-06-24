@@ -1,7 +1,6 @@
 <?php
 
 require_once("funcs.php");
-require_login();
 
 if (!isset($_GET["id"])) die("no id, my dude");
 

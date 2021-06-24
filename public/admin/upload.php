@@ -38,10 +38,10 @@ require_login();
       <br>
       <br>
       <i>
-        © 2019-2020
+        <strike>©</strike> 2019-2021
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
         <br>
-        Some rights reserved under MIT License.
+        No rights reserved.
         <a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
       </i>
       <br>

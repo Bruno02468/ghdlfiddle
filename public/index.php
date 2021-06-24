@@ -72,6 +72,8 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
         <br>
         <i id="description"></i>
         <br>
+        <a id="dl_link">[Download this testbench as a .zip]</a>
+        <br>
 <?php if ($grecaptcha_enabled) { ?>
         <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $sitekey; ?>"></script>
         <script>
@@ -91,10 +93,10 @@ $jsin .= "descriptions[" . $tb["testbench_id"] . "] = ("
       <br>
       <br>
       <i>
-        © 2019-2020
+        <strike>©</strike> 2019-2021
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
         <br>
-        Some rights reserved under MIT License.
+        No rights reserved.
         <a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
       </i>
       <br>

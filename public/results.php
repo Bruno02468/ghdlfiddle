@@ -92,7 +92,7 @@
       <br>
       <br>
       <b>
-        Save 
+        Save
         <a href="results.php?h=<?php echo $hint; ?>">this URL</a>,
         it's the only way to access this job's results.
       </b><br>
@@ -139,7 +139,7 @@
       <br>
       <br>
       <i>
-        © 2019-2020
+        <strike>©</strike> 2019-2021
         <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
         <br>
         Some rights reserved under the MIT License.
