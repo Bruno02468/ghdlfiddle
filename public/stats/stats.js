@@ -120,7 +120,8 @@ function init_chart() {
         y: {
           stacked: true
         }
-      }
+      },
+      aspectRatio: 1.1
     }
   };
   chart = new Chart(chart_canvas.getContext("2d"), config);
