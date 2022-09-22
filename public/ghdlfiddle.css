@@ -61,3 +61,62 @@ a {
 .term b {
   font-weight: bold;
 }
+
+input[type=date] {
+  appearance: none;
+  background-color: rgb(32, 32, 31);
+  border-bottom-color: rgb(80, 82, 80);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  border-left-color: rgb(80, 82, 80);
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-right-color: rgb(80, 82, 80);
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-color: rgb(80, 82, 80);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: rgb(255, 255, 241);
+  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-feature-settings: normal;
+  font-kerning: auto;
+  font-language-override: normal;
+  font-optical-sizing: auto;
+  font-size: 15px;
+  font-size-adjust: none;
+  font-stretch: 100%;
+  font-style: normal;
+  font-variant-alternates: normal;
+  font-variant-caps: normal;
+  font-variant-east-asian: normal;
+  font-variant-ligatures: normal;
+  font-variant-numeric: normal;
+  font-variant-position: normal;
+  font-variation-settings: normal;
+  font-weight: 400;
+  height: 38px;
+  line-height: normal;
+  /* margin-bottom: 15px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  padding-bottom: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 6px; */
+  scrollbar-color: rgb(91, 92, 90) rgb(42, 43, 42);
+  -webkit-text-stroke-color: rgb(255, 255, 241);
+  -webkit-text-stroke-width: 0.4px
+}

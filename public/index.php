@@ -49,7 +49,8 @@ $grecaptcha_enabled = $sitekey && $secretkey;
       Submissions run so far:
       <b><?php echo $c; ?></b> =)
       <br>
-      <br>
+      <a href="./stats/">stats</a><br>
+			<br>
       <br>
       <form method="POST" action="enqueue.php">
         <div class="row">

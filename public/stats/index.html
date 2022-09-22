@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-22780529-9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-22780529-9');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ghdlfiddle runs & stats">
+    <meta name="author" content="Bruno Borges Paschoalinoto">
+    <title>ghdlfiddle - stats</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600"
+    rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css"
+    href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" type="text/css"
+    href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="../ghdlfiddle.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+    integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  </script>
+  </head>
+  <body>
+    <div class="container center">
+      <h1>ghdlfiddle - stats</h1>
+      <h5>open-source vhdl judge</h5>
+      <a href="../">back to main</a><br>
+      <br>
+      <br>
+      <div class="row">
+        <div class="twelve columns">
+          <span id="waiting">Downloading stats...</span>
+        </div>
+
+      <div class="row">
+        <div class="six columns">
+          <label for="start_date">Start date:</label>
+          <input
+            class="u-full-width"
+            type="date"
+            id="start_date"
+            oninput="date_changed();"
+          >
+        </div>
+        <div class="six columns">
+          <label for="end_date">End date:</label>
+          <input
+            class="u-full-width u-input"
+            type="date"
+            id="end_date"
+            oninput="date_changed();"
+          >
+          <br>
+        </div>
+      </div>
+      <div class="row center">
+        <div class="twelve columns">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+      <br>
+      <br>
+      <i>
+        <strike>©</strike> 2019-2022
+        <a href="//oisumida.rs" target="_blank">Bruno Borges Paschoalinoto</a>
+        <br>
+        No rights reserved.
+        <a href="//github.com/Bruno02468/ghdlfiddle">Check out the code!</a>
+      </i>
+      <br>
+      <br>
+    </div>
+    <script src="stats.js"></script>
+  </body>
+</html>

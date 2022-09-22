@@ -10,3 +10,5 @@ public/vcd/*.vcd
 tools/tb_maker/work/*
 # except for its gitkeep
 !tools/tb_maker/work/.gitkeep
+# ignore the stats json
+public/stats/stats.json
