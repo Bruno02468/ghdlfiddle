@@ -47,7 +47,7 @@
             class="u-full-width"
             type="date"
             id="start_date"
-            oninput="date_changed();"
+            oninput=""
           >
         </div>
         <div class="six columns">
@@ -56,11 +56,13 @@
             class="u-full-width u-input"
             type="date"
             id="end_date"
-            oninput="date_changed();"
+            oninput=""
           >
           <br>
         </div>
       </div>
+      <button onclick="date_changed()">Update!</button>
+      <br>
       <canvas id="chart"></canvas>
       <br>
       <br>
